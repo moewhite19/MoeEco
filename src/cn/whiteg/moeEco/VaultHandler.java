@@ -7,12 +7,13 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VaultHandler implements Economy {
-    final BigDecimal minAmount = new BigDecimal("0.01");
+    final BigDecimal minAmount = new BigDecimal("0.000000001").setScale(Setting.decimalScale,RoundingMode.UP);
     final String defMoney = String.valueOf(Setting.defMoney);
     final private MoeEco plugin;
 
@@ -123,7 +124,7 @@ public class VaultHandler implements Economy {
         var money = getBigBalance(dc);
         if (amount < 0) return new EconomyResponse(0,money.doubleValue(),EconomyResponse.ResponseType.FAILURE,"不可以为负数");
         var bigAmount = toBigDecimal(amount);
-        //如果数字小于最小值替换成最小值r
+        //如果数字小于最小值替换成最小值
         if (bigAmount.compareTo(minAmount) < 0){
             bigAmount = minAmount;
         }
@@ -135,7 +136,7 @@ public class VaultHandler implements Economy {
             plugin.getLeaderboard().check(dc.getName(),now);
             amount = money.subtract(newMoney).doubleValue();
             if (Setting.DEBUG){
-                MoeEco.logger.info("从" + dc.getName() + "账户扣除" + bigAmount + "最终扣除" + amount);
+                MoeEco.logger.info("从".concat(dc.getName()).concat("账户扣除").concat(bigAmount.toString()).concat("最终扣除").concat(String.valueOf(amount)));
             }
             return new EconomyResponse(amount,now,EconomyResponse.ResponseType.SUCCESS,"完成");
         }
@@ -164,7 +165,7 @@ public class VaultHandler implements Economy {
         amount = newMoney.subtract(money).doubleValue();
         plugin.getLeaderboard().check(dc.getName(),now);
         if (Setting.DEBUG){
-            MoeEco.logger.info("给" + dc.getName() + "账户添加" + bigAmount + "最终添加" + amount);
+            MoeEco.logger.info("给".concat(dc.getName()).concat("账户添加").concat(bigAmount.toString()).concat("最终添加").concat(String.valueOf(amount)));
         }
         return new EconomyResponse(amount,now,EconomyResponse.ResponseType.SUCCESS,"完成");
     }

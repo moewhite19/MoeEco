@@ -1,0 +1,22 @@
+name: MoeEco
+main: cn.whiteg.moeEco.MoeEco
+version: 1.18
+author: MoeWhite
+depend: [MMOCore, Vault]
+softdepend: []
+commands:
+  moeeco:
+    description: The is MoeEco Command
+    aliases: ['moee' , 'eco']
+  bal:
+    description: The is MoeEco Command
+    aliases: ['bl' , 'money']
+
+  pay:
+    description: The is MoeEco Command
+    aliases: ['py']
+
+  leaderboard:
+    description: Leaderboard
+    aliases: ['baltop', 'moneytop']
+
