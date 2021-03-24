@@ -1,0 +1,22 @@
+ver: 2
+debug: false
+#新玩家默认拥有
+defMoney: 149
+
+#货币名称
+currencyNameSingular: '游戏币'
+
+#复数货币名称
+currencyNamePlural: '$'
+
+#小数点范围
+DecimalScale: 2
+
+#舍入模式(UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN, UNNECESSARY
+RoundingMode: 'FLOOR'
+
+#金钱排行榜长度
+Leaderboard: 20
+
+#显示格式
+DecimalFormat: '###,###,###,###.##$'
