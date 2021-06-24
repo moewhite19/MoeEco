@@ -5,6 +5,7 @@ import cn.whiteg.mmocore.MMOCore;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -99,6 +100,20 @@ public class VaultHandler implements Economy {
     @Override
     public double getBalance(final OfflinePlayer offlinePlayer,final String worldName) {
         return this.getBalance(offlinePlayer);
+    }
+
+    public void setBalance(DataCon dc,double balance) {
+        if (hasAccount(dc)){
+            dc.set(Setting.moneyKey,toBigDecimal(balance).toString());
+        }
+    }
+
+    public void setBalance(Player player,double balance) {
+        setBalance(MMOCore.getPlayerData(player),balance);
+    }
+
+    public void setBalance(String player,double balance) {
+        setBalance(MMOCore.getPlayerData(player),balance);
     }
 
     public String getFormatBalance(final String playerName) {
