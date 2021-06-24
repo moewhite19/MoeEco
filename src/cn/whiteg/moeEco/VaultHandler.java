@@ -51,7 +51,7 @@ public class VaultHandler implements Economy {
 
     @Override
     public String format(final double amount) {
-        return String.valueOf(amount);
+        return getDecimalFormat().format(amount);
     }
 
     @Override
@@ -135,27 +135,28 @@ public class VaultHandler implements Economy {
 
 
     public EconomyResponse withdrawPlayer(final DataCon dc,double amount) {
-        if (!hasAccount(dc)) return new EconomyResponse(0.0,0.0,EconomyResponse.ResponseType.FAILURE,"找不到玩家");
-        var money = getBigBalance(dc);
-        if (amount < 0) return new EconomyResponse(0,money.doubleValue(),EconomyResponse.ResponseType.FAILURE,"不可以为负数");
+        if (!hasAccount(dc)) return new EconomyResponse(0.0,0.0,EconomyResponse.ResponseType.FAILURE,"无效账户");
+        var balance = getBigBalance(dc);
+        if (amount < 0)
+            return new EconomyResponse(0,balance.doubleValue(),EconomyResponse.ResponseType.FAILURE,"不可以为负数");
         var bigAmount = toBigDecimal(amount);
         //如果数字小于最小值替换成最小值
         if (bigAmount.compareTo(minAmount) < 0){
             bigAmount = minAmount;
         }
 
-        if (money.compareTo(bigAmount) >= 0){
-            var newMoney = money.subtract(bigAmount);
-            var now = newMoney.doubleValue();
-            dc.set(Setting.moneyKey,newMoney.toString());
-            plugin.getLeaderboard().check(dc.getName(),now);
-            amount = money.subtract(newMoney).doubleValue();
+        if (balance.compareTo(bigAmount) >= 0){
+            var newBalance = balance.subtract(bigAmount);
+            var doubleValue = newBalance.doubleValue();
+            dc.set(Setting.moneyKey,newBalance.toString());
+            plugin.getLeaderboard().check(dc.getName(),doubleValue);
+            amount = balance.subtract(newBalance).doubleValue();
             if (Setting.DEBUG){
                 MoeEco.logger.info("从".concat(dc.getName()).concat("账户扣除").concat(bigAmount.toString()).concat("最终扣除").concat(String.valueOf(amount)));
             }
-            return new EconomyResponse(amount,now,EconomyResponse.ResponseType.SUCCESS,"完成");
+            return new EconomyResponse(amount,doubleValue,EconomyResponse.ResponseType.SUCCESS,"完成");
         }
-        return new EconomyResponse(0.0,dc.getDouble(Setting.moneyKey),EconomyResponse.ResponseType.FAILURE,"余额不足");
+        return new EconomyResponse(0.0,balance.doubleValue(),EconomyResponse.ResponseType.FAILURE,"余额不足");
     }
 
     @Override
@@ -169,15 +170,15 @@ public class VaultHandler implements Economy {
     }
 
     public EconomyResponse depositPlayer(final DataCon dc,double amount) {
-        if (!hasAccount(dc)) return new EconomyResponse(0.0,0.0,EconomyResponse.ResponseType.FAILURE,"找不到玩家");
-        var money = getBigBalance(dc);
+        if (!hasAccount(dc)) return new EconomyResponse(0.0,0.0,EconomyResponse.ResponseType.FAILURE,"无效账户");
+        var balance = getBigBalance(dc);
         if (amount < 0.0)
-            return new EconomyResponse(0.0,money.doubleValue(),EconomyResponse.ResponseType.FAILURE,"不可以为负数");
+            return new EconomyResponse(0.0,balance.doubleValue(),EconomyResponse.ResponseType.FAILURE,"不可以为负数");
         var bigAmount = toBigDecimal(amount);
-        var newMoney = money.add(bigAmount);
-        var now = newMoney.doubleValue();
-        dc.set(Setting.moneyKey,newMoney.toString());
-        amount = newMoney.subtract(money).doubleValue();
+        var newBalance = balance.add(bigAmount);
+        var now = newBalance.doubleValue();
+        dc.set(Setting.moneyKey,newBalance.toString());
+        amount = newBalance.subtract(balance).doubleValue();
         plugin.getLeaderboard().check(dc.getName(),now);
         if (Setting.DEBUG){
             MoeEco.logger.info("给".concat(dc.getName()).concat("账户添加").concat(bigAmount.toString()).concat("最终添加").concat(String.valueOf(amount)));

@@ -43,7 +43,7 @@ public class pay extends CommandInterface {
             var vault = plugin.getVaultHandler();
             var response = vault.withdrawPlayer(send,amount);
             if (response.type != EconomyResponse.ResponseType.SUCCESS){
-                sender.sendMessage("§b阁下账户只有§f" + response.balance);
+                sender.sendMessage("§b阁下账户只有§f" + vault.format(response.balance));
                 return false;
             }
             amount = response.amount;
