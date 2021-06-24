@@ -29,7 +29,7 @@ public class set extends HasCommandInterface {
                     return true;
                 }
                 amount = new BigDecimal(amount).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
-                dc.set("Money",amount);
+                plugin.getVaultHandler().setBalance(dc,amount);
                 plugin.getLeaderboard().check(dc.getName(),amount);
                 sender.sendMessage("§b将" + sender.getName() + "§b的" + plugin.getVaultHandler().currencyNamePlural() + "设置为§f" + plugin.getVaultHandler().getDecimalFormat().format(amount));
             } else {
@@ -37,21 +37,20 @@ public class set extends HasCommandInterface {
             }
         } else if (args.length == 2){
             if (plugin.getVaultHandler().hasAccount(args[0])){
-                BigDecimal amount;
+                double amount;
                 try{
-                    amount = VaultHandler.toBigDecimal(args[1]);
+                    amount = VaultHandler.toBigDecimal(args[1]).doubleValue();
                 }catch (NumberFormatException e){
                     sender.sendMessage("参数有误");
                     return true;
                 }
                 DataCon dc = MMOCore.getPlayerData(args[0]);
-                dc.set("Money",amount);
-                plugin.getLeaderboard().check(dc.getName(),amount.doubleValue());
-                var value = amount.doubleValue();
-                sender.sendMessage("§b将" + args[0] + "§b的" + plugin.getVaultHandler().currencyNamePlural() + "设置为§f" + plugin.getVaultHandler().getDecimalFormat().format(value));
+                plugin.getVaultHandler().setBalance(dc,amount);
+                plugin.getLeaderboard().check(dc.getName(),amount);
+                sender.sendMessage("§b将" + args[0] + "§b的" + plugin.getVaultHandler().currencyNamePlural() + "设置为§f" + plugin.getVaultHandler().getDecimalFormat().format(amount));
                 Player p = Bukkit.getPlayerExact(args[0]);
                 if (p != null && p.isOnline()){
-                    p.sendMessage(" * §f" + sender.getName() + "§b将阁下的" + plugin.getVaultHandler().currencyNamePlural() + "设置为§f" + plugin.getVaultHandler().getDecimalFormat().format(value));
+                    p.sendMessage(" * §f" + sender.getName() + "§b将阁下的" + plugin.getVaultHandler().currencyNamePlural() + "设置为§f" + plugin.getVaultHandler().getDecimalFormat().format(amount));
                 }
             } else {
                 sender.sendMessage("§b找不到玩家");

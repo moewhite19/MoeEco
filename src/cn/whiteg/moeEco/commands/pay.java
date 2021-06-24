@@ -34,6 +34,7 @@ public class pay extends CommandInterface {
             }
             double amount;
             try{
+
                 amount = Double.parseDouble(args[1]);
             }catch (NumberFormatException e){
                 sender.sendMessage("参数有误");
