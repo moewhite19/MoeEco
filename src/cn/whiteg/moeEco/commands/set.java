@@ -68,4 +68,9 @@ public class set extends HasCommandInterface {
     public boolean canUseCommand(CommandSender sender) {
         return sender.hasPermission("whiteg.test");
     }
+
+    @Override
+    public String getDescription() {
+        return "设置货币数量";
+    }
 }

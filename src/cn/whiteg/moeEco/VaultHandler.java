@@ -138,7 +138,7 @@ public class VaultHandler implements Economy {
         if (!hasAccount(dc)) return new EconomyResponse(0.0,0.0,EconomyResponse.ResponseType.FAILURE,"无效账户");
         var balance = getBigBalance(dc);
         if (amount < 0)
-            return new EconomyResponse(0,balance.doubleValue(),EconomyResponse.ResponseType.FAILURE,"不可以为负数");
+            return new EconomyResponse(0,balance.doubleValue(),EconomyResponse.ResponseType.FAILURE,amount == 0 ? "不可以为0" : "不可以为负数");
         var bigAmount = toBigDecimal(amount);
         //如果数字小于最小值替换成最小值
         if (bigAmount.compareTo(minAmount) < 0){

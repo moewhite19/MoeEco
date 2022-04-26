@@ -17,12 +17,12 @@ public class Setting {
     private static final int CONFIGVER = 2;
     public static boolean DEBUG;
     public static FileConfiguration config;
-    public static String currencyNamePlural;
-    public static String currencyNameSingular;
-    public static double defMoney;
-    public static short decimalScale;
-    public static DecimalFormat decimalFormat;
-    public static RoundingMode roundingMode;
+    public static String currencyNamePlural; //复数货币名称
+    public static String currencyNameSingular;//单数货币名称
+    public static double defMoney; //初始资金
+    public static short decimalScale; //小数点位数
+    public static DecimalFormat decimalFormat; //格式
+    public static RoundingMode roundingMode; //舍入模式
 
     @SuppressWarnings("all")
     public static void reload() {

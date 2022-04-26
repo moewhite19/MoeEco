@@ -25,4 +25,5 @@ public class reload extends HasCommandInterface {
     public boolean canUseCommand(CommandSender sender) {
         return sender.hasPermission("whiteg.test");
     }
+
 }

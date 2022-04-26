@@ -46,7 +46,7 @@ public class leaderboard extends HasCommandInterface {
             StringBuilder sb = new StringBuilder();
             for (; head < list.size() && head < end; head++) {
                 Leaderboard.Item e = list.get(head);
-                sb.append(head + 1).append('.').append(e.getName()).append(" - ").append(MoeEco.plugin.getVaultHandler().getDecimalFormat().format(e.getAmount()));
+                sb.append(" §b" + String.valueOf(head + 1)).append(".§f").append(e.getName()).append("§3 - §f").append(MoeEco.plugin.getVaultHandler().getDecimalFormat().format(e.getAmount()));
                 sender.sendMessage(sb.toString());
                 sb.setLength(0);
             }
@@ -57,9 +57,7 @@ public class leaderboard extends HasCommandInterface {
     @Override
     public List<String> complete(CommandSender sender,Command cmd,String label,String[] args) {
         if (args.length == 1){
-            if (sender.hasPermission("whiteg.test")){
-                return Arrays.asList("sort","clearup");
-            } else return Arrays.asList("1","10");
+            return sender.hasPermission("whiteg.test") ? Arrays.asList("sort","clearup") : Arrays.asList("1","10");
         }
         return null;
     }
@@ -69,4 +67,8 @@ public class leaderboard extends HasCommandInterface {
         return sender.hasPermission("moeeco.leaderboard");
     }
 
+    @Override
+    public String getDescription() {
+        return "查询经济排行榜";
+    }
 }

@@ -76,4 +76,9 @@ public class give extends HasCommandInterface {
     public boolean canUseCommand(CommandSender sender) {
         return sender.hasPermission("moeeco.give");
     }
+
+    @Override
+    public String getDescription() {
+        return "给与货币";
+    }
 }

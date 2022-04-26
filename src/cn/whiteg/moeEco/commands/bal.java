@@ -39,4 +39,9 @@ public class bal extends CommandInterface {
     public List<String> onTabComplete(CommandSender sender,Command cmd,String label,String[] args) {
         return getMatches(MMOCore.getLatelyPlayerList(),args);
     }
+
+    @Override
+    public String getDescription() {
+        return "查询玩家钱包";
+    }
 }

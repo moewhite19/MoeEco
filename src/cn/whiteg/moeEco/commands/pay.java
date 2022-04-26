@@ -34,12 +34,17 @@ public class pay extends CommandInterface {
             }
             double amount;
             try{
-
                 amount = Double.parseDouble(args[1]);
             }catch (NumberFormatException e){
                 sender.sendMessage("参数有误");
                 return false;
             }
+
+            if (amount <= 0){
+                sender.sendMessage("§b数量必须大于0");
+                return false;
+            }
+
             var vault = plugin.getVaultHandler();
             var response = vault.withdrawPlayer(send,amount);
             if (response.type != EconomyResponse.ResponseType.SUCCESS){
@@ -47,13 +52,9 @@ public class pay extends CommandInterface {
                 return false;
             }
             amount = response.amount;
-            if (amount <= 0){
-                sender.sendMessage("§b数量必须大于0");
-                return false;
-            }
             response = vault.depositPlayer(receive,amount);
             if (response.type != EconomyResponse.ResponseType.SUCCESS){
-                sender.sendMessage("出现未知错误" + response.type + " : " + response.errorMessage);
+                sender.sendMessage("§c出现未知错误" + response.type + " : " + response.errorMessage);
                 return false;
             }
             amount = response.amount;
@@ -74,5 +75,10 @@ public class pay extends CommandInterface {
             return getMatches(args,MMOCore.getLatelyPlayerList());
         }
         return null;
+    }
+
+    @Override
+    public String getDescription() {
+        return "支付货币";
     }
 }
