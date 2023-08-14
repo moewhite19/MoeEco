@@ -3,7 +3,10 @@ package cn.whiteg.moeEco;
 import cn.whiteg.mmocore.MMOCore;
 
 import java.io.*;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Leaderboard {
     final int size;
@@ -49,27 +52,36 @@ public class Leaderboard {
         }
     }
 
+    public void remove(String name) {
+        Iterator<Item> it = list.iterator();
+        while (it.hasNext()) {
+            Item e = it.next();
+            if (e.name.equals(name)){
+                it.remove();
+                break;
+            }
+        }
+    }
+
     public void sort() {
-        Collections.sort(list,new Item.solt());
+        list.sort(new Item.solt());
     }
 
 
     public void load(File file) {
         if (file.exists()){
-            try{
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
+            try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)){
                 String f;
                 while ((f = br.readLine()) != null) {
                     String[] arg = f.split(":");
                     if (arg.length < 1) continue;
                     try{
                         list.add(new Item(arg[0],Double.parseDouble(arg[1])));
+                        if (list.size() >= size) return;
                     }catch (NumberFormatException e){
                         e.printStackTrace();
                     }
                 }
-                br.close();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -108,9 +120,6 @@ public class Leaderboard {
     }
 
     public void clearup() {
-        if (list.size() > size){
-            list.subList(size,list.size()).clear();
-        }
         list.removeIf(e -> !MMOCore.hasPlayerData(e.name));
     }
 
